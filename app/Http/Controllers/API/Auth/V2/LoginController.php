@@ -27,17 +27,9 @@ class LoginController extends Controller
         }
 
         $user = auth()->user();
-        if($user->tokens()->count() > 0 && $request->force_login == false) {
-            return response()->json([
-                'need_force_login' => true,
-                'message' => 'Akun sedang login di perangkat lain. Apakah Anda ingin keluar dari perangkat tersebut?'
-            ], 409);
-        }
-
-        $user->tokens()->delete();
 
         $token = $user->createToken('mobile')->plainTextToken;
-        $data['user'] = $user->load(['biro', 'roles']);
+        $data['user'] = $user->load(['roles', 'province', 'city']);
         $data['token'] = $token;
 
         return new ResponseJsonResource($data, 'Login success');

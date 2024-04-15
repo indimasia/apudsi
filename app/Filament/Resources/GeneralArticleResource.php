@@ -2,25 +2,31 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\EmergencyResource\Pages;
-use App\Filament\Resources\EmergencyResource\RelationManagers;
-use App\Models\Emergency;
+use App\Filament\Resources\GeneralArticleResource\Pages;
+use App\Filament\Resources\GeneralArticleResource\RelationManagers;
+use App\Models\GeneralArticle;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Str;
 
-class EmergencyResource extends Resource
+class GeneralArticleResource extends Resource
 {
-    protected static ?string $model = Emergency::class;
+    protected static ?string $model = GeneralArticle::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -28,11 +34,18 @@ class EmergencyResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('title')
-                    ->label('Nama')
+                FileUpload::make('thumbnail')
+                    ->label('Thumbnail')
+                    ->image()
                     ->required(),
-                TextInput::make('content')
-                    ->label('phone')
+                TextInput::make('title')
+                    ->label('Title')
+                    ->required()
+                    ->live(true)
+                    ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                TextInput::make('slug')
+                    ->hidden()
+                    ->label('Slug')
                     ->required(),
                 Select::make("status")
                     ->label("Status")
@@ -41,6 +54,12 @@ class EmergencyResource extends Resource
                         "published" => "Published",
                     ])
                     ->required(),
+                Textarea::make('excerpt')
+                    ->label('Excerpt'),
+                RichEditor::make('content')
+                    ->label('Content')
+                    ->required()
+                    ->columnSpan(2),
             ]);
     }
 
@@ -48,21 +67,27 @@ class EmergencyResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('thumbnail')
+                    ->label('Thumbnail'),
                 TextColumn::make('title')
-                    ->label("Nama")
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('content')
-                    ->label("phone")
+                TextColumn::make('excerpt')
                     ->searchable()
                     ->sortable(),
-                SelectColumn::make('status')
-                    ->label('Status')
-                    ->rules(['required'])
+                SelectColumn::make("status")
                     ->options([
                         "draft" => "Draft",
                         "published" => "Published",
-                    ]),
+                    ])
+                    ->rules(['required']),
+                TextColumn::make("biro.name")
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('created_at')
+                    ->searchable()
+                    ->sortable(),
+                    
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -92,9 +117,9 @@ class EmergencyResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEmergencies::route('/'),
-            'create' => Pages\CreateEmergency::route('/create'),
-            'edit' => Pages\EditEmergency::route('/{record}/edit'),
+            'index' => Pages\ListGeneralArticles::route('/'),
+            'create' => Pages\CreateGeneralArticle::route('/create'),
+            'edit' => Pages\EditGeneralArticle::route('/{record}/edit'),
         ];
     }
 }

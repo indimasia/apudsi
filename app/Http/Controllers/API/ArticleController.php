@@ -4,27 +4,28 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ResponseJsonResource;
-use App\Models\Emergency;
+use App\Models\GeneralArticle;
 use Illuminate\Http\Request;
 
-class EmergencyController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $status = $request->input('status', 'published');
+        $status = $request->input('status');
         $paginate = $request->input('paginate', 10);
-        $responseData = new Emergency();
+        $responseData = new GeneralArticle();
         if(!empty($status)) {
             $responseData = $responseData->where('status', $status);
+        } else {
+            $responseData = $responseData->published();
         }
-
         $responseData = $responseData->orderBy('id', 'desc');
         $responseData =  $responseData->simplePaginate($paginate);
 
-        return new ResponseJsonResource($responseData, 'Emergencies retrieved successfully');
+        return new ResponseJsonResource($responseData, 'Articles retrieved successfully');
     }
 
     /**
@@ -40,8 +41,7 @@ class EmergencyController extends Controller
      */
     public function show(string $id)
     {
-        $data = Emergency::findOrFail($id);
-        return new ResponseJsonResource($data, 'Emergency retrieved successfully');
+        return new ResponseJsonResource(GeneralArticle::findOrFail($id), 'Articles retrieved successfully');
     }
 
     /**

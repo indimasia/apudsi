@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\TipsArticleResource\Pages;
+namespace App\Filament\Resources\GeneralArticleResource\Pages;
 
-use App\Filament\Resources\TipsArticleResource;
+use App\Filament\Resources\GeneralArticleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditTipsArticle extends EditRecord
+class EditGeneralArticle extends EditRecord
 {
-    protected static string $resource = TipsArticleResource::class;
+    protected static string $resource = GeneralArticleResource::class;
 
     protected function getHeaderActions(): array
     {

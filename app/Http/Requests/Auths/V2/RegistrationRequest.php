@@ -23,38 +23,13 @@ class RegistrationRequest extends FormRequest
      */
     public function rules(): array
     {
-        if(request('type') == "biro") {
-            return [
-                'type' => 'required|in:biro,user',
-                'name' => 'required|string|max:255',
-                'password' => 'required|string|min:8',
-                'phone' => 'required|string|unique:users|doesnt_start_with:08',
-                'biro_code' => 'required|unique:biros,code|min:3|max:10',
-                'owner' => 'required|string|max:255',
-                'marketing_phone' => 'required|string|doesnt_start_with:08',
-                'logo' => 'required|file|mimes:jpg,jpeg,png|max:1024',
-                'province_code' => 'required|exists:provinces,kode',
-                'city_code' => 'required|exists:cities,kode',
-                'address' => 'required|string',
-                'average_person_per_year' => 'required|integer',
-            ];
-        } else {
-            // Individu
-            return [
-                'type' => 'required|in:biro,user',
-                'name' => 'required|string|max:255',
-                'password' => 'required|string|min:8',
-                'phone' => 'required|string|unique:users|doesnt_start_with:08',
-                'gender' => 'required|in:M,F',
-                'biro_code' => [
-                    'required',
-                    Rule::exists('biros', 'code')->where(function (Builder $query) {
-                        return $query->where("is_active", true);
-                    }),
-                ],
-                'province_code' => 'required|exists:provinces,kode',
-                'city_code' => 'required|exists:cities,kode',
-            ];
-        }
+        return [
+            'name' => 'required|string|max:255',
+            'password' => 'required|string|min:8',
+            'phone' => 'required|string|unique:users|doesnt_start_with:08',
+            'gender' => 'required|in:M,F',
+            'province_code' => 'required|exists:provinces,kode',
+            'city_code' => 'required|exists:cities,kode',
+        ];
     }
 }

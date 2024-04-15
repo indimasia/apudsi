@@ -21,32 +21,18 @@ Route::group(['prefix' => 'auth'], function () {
     Route::group(['prefix' => 'v2'], function() {
         Route::post('/register', 'App\Http\Controllers\API\Auth\V2\RegisterController');
         Route::post('/login', 'App\Http\Controllers\API\Auth\V2\LoginController');
+        Route::post('/logout', 'App\Http\Controllers\API\Auth\V2\LogoutController')->middleware('auth:sanctum');
+        Route::post("/forgot-password", "App\Http\Controllers\API\Auth\V2\ForgotPasswordController");
     });
-    Route::post('/register', 'App\Http\Controllers\API\Auth\RegisterController');
-    Route::post('/login', 'App\Http\Controllers\API\Auth\LoginController');
-    Route::post('/logout', 'App\Http\Controllers\API\Auth\LogoutController')->middleware('auth:sanctum');
-    Route::post("/forgot-password", "App\Http\Controllers\API\Auth\ForgotPasswordController");
 });
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', 'App\Http\Controllers\API\ProfileController@getProfile');
     Route::post('/profile', 'App\Http\Controllers\API\ProfileController@postProfile');
 
-    Route::resource('/biro-articles', 'App\Http\Controllers\API\BiroArticleController');
-    Route::resource('/visit-saudi-articles', 'App\Http\Controllers\API\VisitSaudiArticleController');
-    Route::resource('/culinary-articles', 'App\Http\Controllers\API\CulinaryArticleController');
-    Route::resource('/tips-articles', 'App\Http\Controllers\API\TipsArticleController');
-    Route::resource('/hidden-gem-articles', 'App\Http\Controllers\API\HiddenGemArticleController');
-    Route::resource('/health-articles', 'App\Http\Controllers\API\HealthArticleController');
-    Route::resource('/banners', 'App\Http\Controllers\API\BannerController');
-    Route::resource('/pray-articles', 'App\Http\Controllers\API\PrayArticleController');
-    Route::resource('/packages', 'App\Http\Controllers\API\PackageController');
-    Route::get('/biro-users/download', 'App\Http\Controllers\API\BiroUserController@download');
-    Route::resource('/biro-users', 'App\Http\Controllers\API\BiroUserController');
-    Route::resource('/emergencies', 'App\Http\Controllers\API\EmergencyController');
-    Route::resource('/groups', 'App\Http\Controllers\API\GroupController');
-    Route::resource('/testimonies', 'App\Http\Controllers\API\TestimonyController');
+    Route::resource('/articles', 'App\Http\Controllers\API\ArticleController');
     
+    Route::resource('/groups', 'App\Http\Controllers\API\GroupController');
     Route::get('/groups/{groupId}/members', 'App\Http\Controllers\API\GroupController@members');
     Route::post('/groups/{groupId}/join', 'App\Http\Controllers\API\GroupController@join');
     Route::post('/groups/{groupId}/leave', 'App\Http\Controllers\API\GroupController@leave');
