@@ -34,6 +34,7 @@ class RegisterController extends Controller
                 'city_code' => $request->city_code,
                 'email_verified_at' => now(),
                 'gender' => $request->gender ?? null,
+                'spph' => $request->spph ?? null,
                 'is_active' => $request->type == "biro" ? false : true,
             ]);
 

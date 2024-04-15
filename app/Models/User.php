@@ -35,7 +35,8 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
         'city_code',
         'is_active',
         'photo',
-        'is_demo'
+        'is_demo',
+        'spph'
     ];
 
     /**
