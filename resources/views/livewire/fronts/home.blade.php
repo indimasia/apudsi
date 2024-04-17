@@ -34,9 +34,9 @@
             <div class="flex flex-col justify-center col-span-1 text-center lg:text-start">
                 <div class="flex items-center justify-center mb-4 lg:justify-normal">
                 </div>
-                <h1 class="mb-8 text-4xl font-extrabold leading-tight lg:text-6xl text-dark-grey-900">Kawan Haji : Mitra Setia Jamaah Haji Dalam Beribadah</h1>
+                <h1 class="mb-8 text-4xl font-extrabold leading-tight lg:text-6xl text-dark-grey-900">Halal Style</h1>
                 <p class="mb-6 text-base font-normal leading-7 lg:w-3/4 text-grey-900">
-                    Layanan Lengkap Untuk Tuntunan Beribadah, Doa, Kuliner, Hidden Gem, Paket Dan Lainnya
+                    Deskripsi
                 </p>
                 <div class="flex flex-col items-center gap-4 lg:flex-row">
                     <a href="https://play.google.com/" target="_blank" class="flex items-center py-4 text-sm font-bold text-black px-7 bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-100 transition duration-300 rounded-xl">Download Sekarang</a>

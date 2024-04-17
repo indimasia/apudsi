@@ -23,7 +23,7 @@ jobs:
             cd /home/imtj3632/public_html/gtmupdate.id
             pwd
             echo "git pull"
-            git pull origin main --rebase
+            git pull origin develop --rebase
             echo "composer install"
             php -d "disable_functions=" /usr/local/bin/composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
             echo "migrate"
