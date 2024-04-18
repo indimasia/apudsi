@@ -27,6 +27,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    Route::post("/update-location", "App\Http\Controllers\API\UpdateLocationController");
     Route::get('/profile', 'App\Http\Controllers\API\ProfileController@getProfile');
     Route::post('/profile', 'App\Http\Controllers\API\ProfileController@postProfile');
 

@@ -27,6 +27,7 @@ class LoginController extends Controller
         }
 
         $user = auth()->user();
+        $user->update(['last_online' => now()]);
 
         $token = $user->createToken('mobile')->plainTextToken;
         $data['user'] = $user->load(['roles', 'province', 'city']);
