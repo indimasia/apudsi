@@ -32,6 +32,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/profile', 'App\Http\Controllers\API\ProfileController@postProfile');
 
     Route::resource('/articles', 'App\Http\Controllers\API\ArticleController');
+    Route::resource('/sos', 'App\Http\Controllers\API\SosController');
     
     Route::resource('/groups', 'App\Http\Controllers\API\GroupController');
     Route::get('/groups/{groupId}/members', 'App\Http\Controllers\API\GroupController@members');
