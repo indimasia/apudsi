@@ -39,6 +39,7 @@
                     Deskripsi
                 </p>
                 <div class="flex flex-col items-center gap-4 lg:flex-row">
+                    <a href="/search-user" class="flex items-center py-4 text-sm font-bold text-black px-7 bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-100 transition duration-300 rounded-xl">Lihat Keluarga</a>
                     <a href="https://play.google.com/" target="_blank" class="flex items-center py-4 text-sm font-bold text-black px-7 bg-yellow-400 hover:bg-yellow-600 focus:ring-4 focus:ring-yellow-100 transition duration-300 rounded-xl">Download Sekarang</a>
                     <button class="flex items-center py-4 text-sm font-medium px-7 text-gray-700 hover:text-gray-900 transition duration-300 rounded-2xl">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mr-2">
