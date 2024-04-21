@@ -15,7 +15,14 @@ class SosController extends Controller
      */
     public function index()
     {
-        $responseData = Sos::with(['user.province', 'user.city'])->where("updated_at", ">", now()->subMinutes(5))->orderByDesc('updated_at')->limit(100)->get();
+        $responseData = Sos::with(['user.province', 'user.city'])
+            ->where("updated_at", ">", now()
+            ->subMinutes(5))
+            ->orderByDesc("updated_at")
+            ->limit(100)
+            ->get()
+            ->append('distance_in_km')
+            ->sortBy('distance_in_km');
 
         return new ResponseJsonResource($responseData, 'SOS retrieved successfully');
     }

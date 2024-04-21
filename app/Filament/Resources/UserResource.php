@@ -69,6 +69,8 @@ class UserResource extends Resource
                         'F' => 'Perempuan',
                     ])
                     ->required(),
+                TextInput::make("spph")
+                    ->label('SPPH'),
                 // Select::make('biro_id')
                 //     ->label('Biro')
                 //     ->options(fn () => \App\Models\Biro::pluck('name', 'id')),
@@ -114,6 +116,10 @@ class UserResource extends Resource
                 //     ->label('Biro')
                 //     ->searchable()
                 //     ->sortable(),
+                TextColumn::make("spph")
+                    ->label('SPPH')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make("province.nama")
                     ->label('Provinsi')
                     ->searchable()

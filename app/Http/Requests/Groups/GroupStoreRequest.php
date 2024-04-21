@@ -26,8 +26,6 @@ class GroupStoreRequest extends FormRequest
             "name" => ["required", "string", "max:255"],
             'description' => ["nullable", "string", "max:255"],
             "image" => ["nullable", "image", "max:255"],
-            "meet_time" => ["required", "date", "before:$date"],
-            "meet_location" => ["required", "string", "max:255"],
             "note" => ["nullable", "string"],
         ];
     }
