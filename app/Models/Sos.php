@@ -31,6 +31,8 @@ class Sos extends Model
         $dist = rad2deg($dist);
         $kilometers = $dist * 60 * 1.1515 * 1.609344;
 
+        $kilometers = is_nan($kilometers) ? 0 : $kilometers;
+
         return round($kilometers, 2);
     }
 
