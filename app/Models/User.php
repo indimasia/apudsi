@@ -35,7 +35,11 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
         'city_code',
         'is_active',
         'photo',
-        'is_demo'
+        'is_demo',
+        'spph',
+        'lat',
+        'lng',
+        'last_online',
     ];
 
     /**
@@ -69,11 +73,6 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
-    }
-
-    public function biro()
-    {
-        return $this->belongsTo(Biro::class);
     }
 
     public function province()

@@ -32,8 +32,10 @@ class RegisterController extends Controller
                 'phone' => $request->phone,
                 'province_code' => $request->province_code,
                 'city_code' => $request->city_code,
+                'email' => $request->email,
                 'email_verified_at' => now(),
                 'gender' => $request->gender ?? null,
+                'spph' => $request->spph ?? null,
                 'is_active' => $request->type == "biro" ? false : true,
             ]);
 

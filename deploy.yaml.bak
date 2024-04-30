@@ -1,0 +1,38 @@
+name: Deploy Main
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  laravel-deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: remote server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Start Deploy Main"
+            echo "open location"
+            cd /home/imtj3632/public_html/gtmupdate.id
+            pwd
+            echo "git pull"
+            git pull origin develop --rebase
+            echo "composer install"
+            php -d "disable_functions=" /usr/local/bin/composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+            echo "migrate"
+            php -d "disable_functions=" artisan migrate --force
+            echo "cache"
+            php -d "disable_functions=" artisan config:cache
+            php -d "disable_functions=" artisan route:cache
+            php -d "disable_functions=" artisan view:clear
+            php -d "disable_functions=" artisan event:cache
+            php -d "disable_functions=" artisan queue:restart
+            
+

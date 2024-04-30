@@ -70,7 +70,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Jakarta',
 
     /*
     |--------------------------------------------------------------------------
@@ -187,5 +187,5 @@ return [
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
-    'app_version' => '0.0.1',
+    'app_version' => '1.0.0',
 ];

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Groups;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class GroupStoreRequest extends FormRequest
+class StoreSosRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return auth()->user()->hasRole("user");
+        return true;
     }
 
     /**
@@ -21,12 +21,10 @@ class GroupStoreRequest extends FormRequest
      */
     public function rules(): array
     {
-        $date = now()->addDays(5)->format("Y-m-d");
         return [
-            "name" => ["required", "string", "max:255"],
-            'description' => ["nullable", "string", "max:255"],
-            "image" => ["nullable", "image", "max:255"],
-            "note" => ["nullable", "string"],
+            'note' => 'nullable|string',
+            'lat' => 'required',
+            'lng' => 'required',
         ];
     }
 }

@@ -13,8 +13,6 @@ class Group extends Model
         "name",
         "description",
         "image",
-        "meet_time",
-        "meet_location",
         "note",
         'created_by'
     ];

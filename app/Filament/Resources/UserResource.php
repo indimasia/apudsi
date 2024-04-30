@@ -69,9 +69,11 @@ class UserResource extends Resource
                         'F' => 'Perempuan',
                     ])
                     ->required(),
-                Select::make('biro_id')
-                    ->label('Biro')
-                    ->options(fn () => \App\Models\Biro::pluck('name', 'id')),
+                TextInput::make("spph")
+                    ->label('SPPH'),
+                // Select::make('biro_id')
+                //     ->label('Biro')
+                //     ->options(fn () => \App\Models\Biro::pluck('name', 'id')),
                 Select::make('province_code')
                     ->label('Provinsi')
                     ->options(fn () => \App\Models\Province::pluck('nama', 'kode'))
@@ -110,8 +112,12 @@ class UserResource extends Resource
                     ->formatStateUsing(fn(string $state) => $state == 'M' ? 'Laki-laki' : 'Perempuan')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make("biro.name")
-                    ->label('Biro')
+                // TextColumn::make("biro.name")
+                //     ->label('Biro')
+                //     ->searchable()
+                //     ->sortable(),
+                TextColumn::make("spph")
+                    ->label('SPPH')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make("province.nama")
@@ -124,13 +130,7 @@ class UserResource extends Resource
                     ->sortable(),
                 ToggleColumn::make('is_active')
                     ->label('Aktif')
-                    ->sortable()
-                    ->afterStateUpdated(function(User $user) {
-                        if($user->hasRole('biro')) {
-                            $user->biro->is_active = $user->is_active;
-                            $user->biro->save();
-                        }
-                    }),
+                    ->sortable(),
                 ToggleColumn::make('is_demo')
                     ->label('Demo')
             ])
@@ -147,12 +147,6 @@ class UserResource extends Resource
                         }
                 
                         return $data;
-                    })
-                    ->after(function(User $user) {
-                        if($user->hasRole('biro')) {
-                            $user->biro->is_active = $user->is_active;
-                            $user->biro->save();
-                        }
                     }),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
