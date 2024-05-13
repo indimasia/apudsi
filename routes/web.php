@@ -21,6 +21,7 @@ Route::get('/', function () {
 Volt::route('/', 'fronts.home')->name('home');
 Volt::route('password-reset/{token}', 'fronts.auth.password-reset')->name('password.reset');
 Volt::route('password-reset-status', 'fronts.auth.password-reset-status')->name('password.reset.status');
+Volt::route('delete-user', 'fronts.auth.delete-user')->name('delete-user');
 Volt::route("privacy-policy", "fronts.privacy-policy")->name("privacy-policy");
 Volt::route("search-user", "fronts.find_user.index")->name("find_user.index");
 Volt::route("search-user/maps", "fronts.find_user.maps")->name("find_user.maps");
