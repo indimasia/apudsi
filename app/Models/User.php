@@ -72,7 +72,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return auth()->user()->hasRole('super_admin');
     }
 
     public function province()
