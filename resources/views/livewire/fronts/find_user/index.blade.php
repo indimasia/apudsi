@@ -17,7 +17,7 @@ $search = function() {
     $this->phone = preg_replace('/^08/', '628', $this->phone);
     $data = User::where('spph', $this->spph)->where('phone', $this->phone)->first();
     if ($data) {
-        return $this->redirectRoute('find_user.maps', navigate:true, parameters: [
+        return $this->redirectRoute('find_user.maps', navigate:false, parameters: [
                 'spph' => $this->spph,
                 'phone' => $this->phone
             ]);
