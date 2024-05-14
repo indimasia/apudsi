@@ -26,7 +26,6 @@ mount(function() {
     <div id="map" style="height: 100vh"></div>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <script>
-        window.location.reload();
         var map = L.map('map').setView([{{ $this->user->lat }}, {{ $this->user->lng }}], 13);
 
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
