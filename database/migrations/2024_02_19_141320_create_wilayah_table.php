@@ -16,9 +16,6 @@ return new class extends Migration
             $table->string("kode");
             $table->string("nama")->nullable();
         });
-
-        DB::statement("CREATE VIEW provinces AS SELECT * FROM wilayah WHERE LENGTH(kode) = 2");
-        DB::statement("CREATE VIEW cities AS SELECT kode, LEFT(kode,2) as kode_provinsi, nama FROM wilayah WHERE LENGTH(kode) = 5");
     }
 
     /**
@@ -27,7 +24,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('wilayah');
-        DB::statement("DROP VIEW provinces");
-        DB::statement("DROP VIEW cities");
     }
 };
