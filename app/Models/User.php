@@ -84,4 +84,19 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
     {
         return $this->belongsTo(City::class, 'city_code', 'kode');
     }
+
+    public function district()
+    {
+        return $this->belongsTo(District::class, 'district_code', 'kode');
+    }
+
+    public function village()
+    {
+        return $this->belongsTo(Village::class, 'village_code', 'kode');
+    }
+    
+    public function shops()
+    {
+        return $this->hasMany(Shop::class);
+    }
 }
