@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\ShopController;
 use App\Http\Controllers\API\Master\CityController;
-use App\Http\Controllers\API\Master\DistrictController;
-use App\Http\Controllers\API\Master\VillageController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\Master\VillageController;
+use App\Http\Controllers\API\Master\DistrictController;
 use App\Http\Controllers\API\Master\ProvinceController;
 
 /*
@@ -27,5 +28,9 @@ Route::group(['prefix' => 'masters'], function () {
     Route::get('/cities', CityController::class);
     Route::get('/districts', DistrictController::class);
     Route::get('/villages', VillageController::class);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('shops', ShopController::class)->except(['edit']);
 });
     
