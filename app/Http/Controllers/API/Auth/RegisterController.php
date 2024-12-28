@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Auth;
 
 use Exception;
+use App\Models\Shop;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -27,10 +28,33 @@ class RegisterController extends Controller
                 'gender'            => $request->gender ?? null,
             ]);
 
-            $user->assignRole('user');
+            if ($request->user_type == 'seller') {
+                $user->assignRole(['seller','user']);
+            } else {
+                $user->assignRole('user');
+            }
+
+            if ($request->has('shop')) {
+                $logo = null;
+                if ($request->hasFile('shop.logo')) {
+                    // store logo
+                    $logo = $request->file('shop.logo')->storePubliclyAs('logo', $request->file('shop.logo')->getClientOriginalName());
+                }
+                
+                // create shop
+                $shop = Shop::create([
+                    'name'        => $request->shop['name'],
+                    'type'        => $request->shop['type'],
+                    'description' => $request->shop['description'] ?? null,
+                    'address'     => $request->shop['address'],
+                    'logo'        => $logo,
+                    'user_id'     => $user->id,
+                ]);
+            }
 
             return ResponseJsonResource::make([
-                'user' => User::with(['roles', 'province', 'city'])->find($user->id)
+                'user' => User::with(['roles', 'province', 'city'])->find($user->id),
+                'shop' => $shop ?? null,
             ], "User berhasil dibuat");
 
         } catch (Exception $e) {
