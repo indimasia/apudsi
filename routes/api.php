@@ -23,9 +23,9 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'masters'], function () { 
-    Route::get('/provinces', [ProvinceController::class]);
-    Route::get('/cities', [CityController::class]);
-    Route::get('/districts', [DistrictController::class]);
-    Route::get('/villages', [VillageController::class]);
+    Route::get('/provinces', ProvinceController::class);
+    Route::get('/cities', CityController::class);
+    Route::get('/districts', DistrictController::class);
+    Route::get('/villages', VillageController::class);
 });
     
