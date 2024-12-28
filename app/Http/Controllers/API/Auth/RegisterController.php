@@ -38,7 +38,7 @@ class RegisterController extends Controller
                 $logo = null;
                 if ($request->hasFile('shop.logo')) {
                     // store logo
-                    $logo = $request->file('shop.logo')->storePubliclyAs('logo', $request->file('shop.logo')->getClientOriginalName());
+                    $logo = $request->file('shop.logo')->store('logo' , 'public');
                 }
                 
                 // create shop
