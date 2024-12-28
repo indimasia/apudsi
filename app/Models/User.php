@@ -63,12 +63,12 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
         'is_demo' => 'boolean',
     ];
 
-    protected $appends = ['photo_path'];
+    // protected $appends = ['photo_path'];
 
-    public function getPhotoPathAttribute()
-    {
-        return !empty($this->photo) ? asset('storage/' . $this->photo) : asset('images/logo-yellow.png');
-    }
+    // public function getPhotoPathAttribute()
+    // {
+    //     return !empty($this->photo) ? asset('storage/' . $this->photo) : asset('images/logo-yellow.png');
+    // }
 
     public function canAccessPanel(Panel $panel): bool
     {
