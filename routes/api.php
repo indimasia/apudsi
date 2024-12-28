@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\ShopController;
+use App\Http\Controllers\API\VersionController;
+use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Master\CityController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Master\VillageController;
@@ -19,8 +21,11 @@ use App\Http\Controllers\API\Master\ProvinceController;
 |
 */
 
+Route::get('/version', VersionController::class);
+
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', RegisterController::class);
+    Route::post('/login', LoginController::class);
 });
 
 Route::group(['prefix' => 'masters'], function () { 
