@@ -24,13 +24,6 @@ Route::group(['prefix' => 'auth'], function () {
         Route::post('/logout', 'App\Http\Controllers\API\Auth\V2\LogoutController')->middleware('auth:sanctum');
         Route::post("/forgot-password", "App\Http\Controllers\API\Auth\V2\ForgotPasswordController");
     });
-
-    // Route::group(['prefix' => 'v3'], function() {
-    //     Route::post('/register', 'App\Http\Controllers\API\Auth\V2\RegisterController');
-    //     Route::post('/login', 'App\Http\Controllers\API\Auth\V2\LoginController');
-    //     Route::post('/logout', 'App\Http\Controllers\API\Auth\V2\LogoutController')->middleware('auth:sanctum');
-    //     Route::post("/forgot-password", "App\Http\Controllers\API\Auth\V2\ForgotPasswordController");
-    // });
 });
 
 Route::middleware('auth:sanctum')->group(function () {

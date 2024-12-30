@@ -13,6 +13,8 @@ use App\Http\Controllers\API\Auth\LogoutController;
 use App\Http\Controllers\API\Master\CityController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Master\VillageController;
+use App\Http\Controllers\API\UpdateLocationController;
+use App\Http\Controllers\API\AccountDeletionController;
 use App\Http\Controllers\API\Master\DistrictController;
 use App\Http\Controllers\API\Master\ProvinceController;
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
@@ -34,7 +36,7 @@ Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', RegisterController::class);
     Route::post('/login', LoginController::class);
     Route::post('/logout', LogoutController::class)->middleware('auth:sanctum');
-    // Route::post('/forgot-password', ForgotPasswordController::class);
+    Route::post('/forgot-password', ForgotPasswordController::class);
 });
 
 Route::group(['prefix' => 'masters'], function () { 
@@ -46,6 +48,9 @@ Route::group(['prefix' => 'masters'], function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::resource('shops', ShopController::class)->except(['edit']);
+
+    // Update Location
+    Route::post('/update-location', UpdateLocationController::class);
 
     // Profile
     Route::get('/profile', [ProfileController::class, 'show']);
@@ -67,6 +72,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Chat
     Route::resource('groups/{groupId}/chats', ChatController::class);
+
+    // Account Deletion
+    Route::post('/account-deletion', AccountDeletionController::class);
 
 });
     
