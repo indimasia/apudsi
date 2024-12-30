@@ -16,9 +16,12 @@ class AccountDeletionController extends Controller
     {
         $user = auth()->user();
 
-        if($user->hasRole("biro")) {
-            User::where('biro_id', $user->biro_id)->delete();
-            Biro::find($user->biro_id)->delete();
+        if($user->hasRole("seller")) {
+            $user->shops()->delete();
+            $user->delete();
+        // if($user->hasRole("biro")) {
+        //     User::where('biro_id', $user->biro_id)->delete();
+        //     Biro::find($user->biro_id)->delete();
         } else {
             $user->delete();
         }
