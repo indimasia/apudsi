@@ -58,7 +58,7 @@ class SosController extends Controller
     public function show(string $id)
     {
         try {
-            return new ResponseJsonResource(Sos::with(['user.province', 'user.city'])->findOrFail($id), 'Sos retrieved successfully');
+            return new ResponseJsonResource(Sos::with(['user.province', 'user.city', 'user.district', 'user.village'])->findOrFail($id), 'Sos retrieved successfully');
         } catch (\Exception $e) {
             return response()->json(['message' => 'SOS not found'], $e->getCode() ?: 404);
         }

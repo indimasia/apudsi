@@ -41,20 +41,25 @@ class ChatController extends Controller
             'attachment' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         
-        $group = Group::findOrFail($groupId);
-        if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
-            return response()->json(['message' => 'You are not a member of this group'], 403);
+        try {
+            $group = Group::findOrFail($groupId);
+            if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
+                return response()->json(['message' => 'You are not a member of this group'], 403);
+            }
+    
+            if($request->hasFile('attachment')) {
+                $data['attachment'] = $request->file('attachment')->store('chats', 'public');
+            }
+    
+            $data['group_id'] = $groupId;
+            $data['sent_by'] = auth()->user()->id;
+            Chat::create($data);
+    
+            return response()->json(['message' => 'Chat has been sent'], 201);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Chat not sent'], $e->getCode() ?: 400);
         }
-
-        if($request->hasFile('attachment')) {
-            $data['attachment'] = $request->file('attachment')->store('chats', 'public');
-        }
-
-        $data['group_id'] = $groupId;
-        $data['sent_by'] = auth()->user()->id;
-        Chat::create($data);
-
-        return response()->json(['message' => 'Chat has been sent'], 201);
+        
     }
 
     /**
@@ -75,27 +80,32 @@ class ChatController extends Controller
             'attachment' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        $group = Group::findOrFail($groupId);
-
-        if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
-            return response()->json(['message' => 'You are not a member of this group'], 403);
+        try {
+            $group = Group::findOrFail($groupId);
+    
+            if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
+                return response()->json(['message' => 'You are not a member of this group'], 403);
+            }
+    
+            $chat = Chat::findOrFail($id);
+    
+            if($chat->sent_by != auth()->user()->id) {
+                return response()->json(['message' => 'You are not authorized to update this chat'], 403);
+            }
+    
+            if($request->hasFile('attachment')) {
+                $data['attachment'] = $request->file('attachment')->store('chats', 'public');
+            } else {
+                unset($data['attachment']);
+            }
+    
+            $chat->update($data);
+    
+            return response()->json(['message' => 'Chat has been updated'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Chat not updated'], $e->getCode() ?: 400);
         }
 
-        $chat = Chat::findOrFail($id);
-
-        if($chat->sent_by != auth()->user()->id) {
-            return response()->json(['message' => 'You are not authorized to update this chat'], 403);
-        }
-
-        if($request->hasFile('attachment')) {
-            $data['attachment'] = $request->file('attachment')->store('chats', 'public');
-        } else {
-            unset($data['attachment']);
-        }
-
-        $chat->update($data);
-
-        return response()->json(['message' => 'Chat has been updated'], 200);
     }
 
     /**
@@ -103,20 +113,24 @@ class ChatController extends Controller
      */
     public function destroy(string $groupId, string $id)
     {
-        $group = Group::findOrFail($groupId);
-
-        if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
-            return response()->json(['message' => 'You are not a member of this group'], 403);
+        try {
+            $group = Group::findOrFail($groupId);
+    
+            if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
+                return response()->json(['message' => 'You are not a member of this group'], 403);
+            }
+    
+            $chat = Chat::findOrFail($id);
+    
+            if($chat->sent_by != auth()->user()->id) {
+                return response()->json(['message' => 'You are not authorized to delete this chat'], 403);
+            }
+    
+            $chat->delete();
+    
+            return response()->json(['message' => 'Chat has been deleted'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Chat not deleted'], $e->getCode() ?: 400);
         }
-
-        $chat = Chat::findOrFail($id);
-
-        if($chat->sent_by != auth()->user()->id) {
-            return response()->json(['message' => 'You are not authorized to delete this chat'], 403);
-        }
-
-        $chat->delete();
-
-        return response()->json(['message' => 'Chat has been deleted'], 200);
     }
 }

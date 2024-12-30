@@ -73,8 +73,12 @@ class GroupController extends Controller
      */
     public function show(string $id)
     {
-        $data = Group::findOrFail($id);
-        return new ResponseJsonResource($data, 'Group retrieved successfully');
+        try {
+            $data = Group::findOrFail($id);
+            return new ResponseJsonResource($data, 'Group retrieved successfully');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not found'], $e->getCode() ?: 404);
+        }
     }
 
     /**
@@ -82,16 +86,21 @@ class GroupController extends Controller
      */
     public function update(GroupUpdateRequest $request, string $id)
     {
-        $data = $request->validated();
-        $group = Group::findOrFail($id);
+        try {
+            $data = $request->validated();
+            $group = Group::findOrFail($id);
 
-        if($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('groups', 'public');
+            if($request->hasFile('image')) {
+                $data['image'] = $request->file('image')->store('groups', 'public');
+            }
+
+            $group->update($data);
+
+            return response()->json(['message' => 'Group has been updated'], 200);
+            
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not updated'], $e->getCode() ?: 400);
         }
-
-        $group->update($data);
-
-        return response()->json(['message' => 'Group has been updated'], 200);
     }
 
     /**
@@ -99,15 +108,20 @@ class GroupController extends Controller
      */
     public function destroy(string $id)
     {
-        $group = Group::findOrFail($id);
+        try {
+            $group = Group::findOrFail($id);
 
-        if($group->created_by != auth()->user()->id) {
-            return response()->json(['message' => 'You are not authorized to delete this group'], 403);
+            if($group->created_by != auth()->user()->id) {
+                return response()->json(['message' => 'You are not authorized to delete this group'], 403);
+            }
+
+            $group->delete();
+
+            return response()->json(['message' => 'Group has been deleted'], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not deleted'], $e->getCode() ?: 400);
         }
-
-        $group->delete();
-
-        return response()->json(['message' => 'Group has been deleted'], 200);
     }
 
     /**
@@ -115,18 +129,23 @@ class GroupController extends Controller
      */
     public function join(string $id)
     {
-        $group = Group::findOrFail($id);
-        if($group->created_by == auth()->user()->id) {
-            return response()->json(['message' => 'You are the creator of this group, you cannot join'], 403);
+        try {
+            $group = Group::findOrFail($id);
+            if($group->created_by == auth()->user()->id) {
+                return response()->json(['message' => 'You are the creator of this group, you cannot join'], 403);
+            }
+
+            if($group->members()->where('user_id', auth()->user()->id)->exists()) {
+                return response()->json(['message' => 'You have already joined the group'], 403);
+            }
+
+            $group->members()->attach(auth()->user()->id);
+
+            return response()->json(['message' => 'You have joined the group'], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not found'], $e->getCode() ?: 404);
         }
-
-        if($group->members()->where('user_id', auth()->user()->id)->exists()) {
-            return response()->json(['message' => 'You have already joined the group'], 403);
-        }
-
-        $group->members()->attach(auth()->user()->id);
-
-        return response()->json(['message' => 'You have joined the group'], 200);
     }
 
     /**
@@ -169,10 +188,15 @@ class GroupController extends Controller
 
     public function memberShow(string $groupId, string $userId)
     {
-        $group = Group::findOrFail($groupId);
-        $member = $group->members()->findOrFail($userId);
+        try {
+            $group = Group::findOrFail($groupId);
+            $member = $group->members()->findOrFail($userId);
 
-        return new ResponseJsonResource($member, 'Group member retrieved successfully');
+            return new ResponseJsonResource($member, 'Group member retrieved successfully');
+            
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not found'], $e->getCode() ?: 404);
+        }
     }
 
     public function removeUser(string $groupId, string $userId)
