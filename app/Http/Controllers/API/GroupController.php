@@ -99,7 +99,7 @@ class GroupController extends Controller
             return response()->json(['message' => 'Group has been updated'], 200);
             
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Group not updated'], $e->getCode() ?: 400);
+            return response()->json(['message' => 'Group not updated'], $e->getCode() ?: 500);
         }
     }
 
@@ -120,7 +120,7 @@ class GroupController extends Controller
             return response()->json(['message' => 'Group has been deleted'], 200);
 
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Group not deleted'], $e->getCode() ?: 400);
+            return response()->json(['message' => 'Group not deleted'], $e->getCode() ?: 500);
         }
     }
 
@@ -193,7 +193,7 @@ class GroupController extends Controller
             $member = $group->members()->findOrFail($userId);
 
             return new ResponseJsonResource($member, 'Group member retrieved successfully');
-            
+
         } catch (\Exception $e) {
             return response()->json(['message' => 'Group not found'], $e->getCode() ?: 404);
         }
