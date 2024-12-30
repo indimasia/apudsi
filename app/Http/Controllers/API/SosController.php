@@ -32,24 +32,29 @@ class SosController extends Controller
      */
     public function store(StoreSosRequest $request)
     {
-        $data = $request->validated();
-        $data['user_id'] = auth()->user()->id;
-        $sos = Sos::where("user_id", auth()->user()->id);
-        if($sos->exists()) {
-            $sos->update([
-                'note' => $data['note'],
-                'updated_at' => now()
+        try {
+                $data = $request->validated();
+                $data['user_id'] = auth()->user()->id;
+                $sos = Sos::where("user_id", auth()->user()->id);
+                if($sos->exists()) {
+                $sos->update([
+                    'note' => $data['note'],
+                    'updated_at' => now()
+                ]);
+            } else {
+                Sos::create($data);
+            }
+            auth()->user()->update([
+                'lat' => $data['lat'], 
+                'lng' => $data['lng'],
+                'last_online' => now(),
             ]);
-        } else {
-            Sos::create($data);
-        }
-        auth()->user()->update([
-            'lat' => $data['lat'], 
-            'lng' => $data['lng'],
-            'last_online' => now(),
-        ]);
 
-        return response()->json(['message' => 'SOS has been sent'], 201);
+            return response()->json(['message' => 'SOS has been sent'], 201);
+            
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e->getMessage()], $e->getCode() ?: 500);
+        }
     }
 
     /**

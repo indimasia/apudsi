@@ -57,7 +57,7 @@ class ChatController extends Controller
     
             return response()->json(['message' => 'Chat has been sent'], 201);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Chat not sent'], $e->getCode() ?: 400);
+            return response()->json(['message' => 'Chat not sent'], $e->getCode() ?: 500);
         }
         
     }
@@ -103,7 +103,7 @@ class ChatController extends Controller
     
             return response()->json(['message' => 'Chat has been updated'], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Chat not updated'], $e->getCode() ?: 400);
+            return response()->json(['message' => 'Chat not updated'], $e->getCode() ?: 500);
         }
 
     }
@@ -129,8 +129,9 @@ class ChatController extends Controller
             $chat->delete();
     
             return response()->json(['message' => 'Chat has been deleted'], 200);
+            
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Chat not deleted'], $e->getCode() ?: 400);
+            return response()->json(['message' => 'Chat not deleted'], $e->getCode() ?: 500);
         }
     }
 }
