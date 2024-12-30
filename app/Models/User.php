@@ -33,6 +33,8 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
         'biro_id',
         'province_code',
         'city_code',
+        'district_code',
+        'village_code',
         'is_active',
         'photo',
         'is_demo',

@@ -134,27 +134,37 @@ class GroupController extends Controller
      */
     public function leave(string $id)
     {
-        $group = Group::findOrFail($id);
-        if($group->created_by == auth()->user()->id) {
-            return response()->json(['message' => 'You are the creator of this group, you cannot leave'], 403);
+        try {
+            $group = Group::findOrFail($id);
+            if($group->created_by == auth()->user()->id) {
+                return response()->json(['message' => 'You are the creator of this group, you cannot leave'], 403);
+            }
+    
+            if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
+                return response()->json(['message' => 'You are not a member of this group'], 403);
+            }
+    
+            $group->chats()->where('sent_by', auth()->user()->id)->delete();
+            $group->members()->detach(auth()->user()->id);
+    
+            return response()->json(['message' => 'You have left the group'], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not found'], $e->getCode() ?: 404);
         }
 
-        if(!$group->members()->where('user_id', auth()->user()->id)->exists()) {
-            return response()->json(['message' => 'You are not a member of this group'], 403);
-        }
-
-        $group->chats()->where('sent_by', auth()->user()->id)->delete();
-        $group->members()->detach(auth()->user()->id);
-
-        return response()->json(['message' => 'You have left the group'], 200);
     }
 
     public function members(string $groupId)
     {
-        $group = Group::findOrFail($groupId);
-        $members = $group->members()->get();
+        try {   
+            $group = Group::findOrFail($groupId);
+            $members = $group->members()->get();
 
-        return new ResponseJsonResource($members, 'Group members retrieved successfully');
+            return new ResponseJsonResource($members, 'Group members retrieved successfully');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not found'], $e->getCode() ?: 404);
+        }
     }
 
     public function memberShow(string $groupId, string $userId)
@@ -167,22 +177,28 @@ class GroupController extends Controller
 
     public function removeUser(string $groupId, string $userId)
     {
-        $group = Group::findOrFail($groupId);
-        if($group->created_by != auth()->user()->id) {
-            return response()->json(['message' => 'You are not authorized to remove user from this group'], 403);
+        try {
+            $group = Group::findOrFail($groupId);
+            if($group->created_by != auth()->user()->id) {
+                return response()->json(['message' => 'You are not authorized to remove user from this group'], 403);
+            }
+    
+            if($group->created_by == $userId) {
+                return response()->json(['message' => 'You cannot remove the creator of this group'], 403);
+            }
+    
+            if(!$group->members()->where('user_id', $userId)->exists()) {
+                return response()->json(['message' => 'User is not a member of this group'], 403);
+            }
+    
+            $group->chats()->where('sent_by', $userId)->delete();
+            $group->members()->detach($userId);
+    
+            return response()->json(['message' => 'User has been removed from the group'], 200);
+
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Group not found'], $e->getCode() ?: 404);
         }
-
-        if($group->created_by == $userId) {
-            return response()->json(['message' => 'You cannot remove the creator of this group'], 403);
-        }
-
-        if(!$group->members()->where('user_id', $userId)->exists()) {
-            return response()->json(['message' => 'User is not a member of this group'], 403);
-        }
-
-        $group->chats()->where('sent_by', $userId)->delete();
-        $group->members()->detach($userId);
-
-        return response()->json(['message' => 'User has been removed from the group'], 200);
+        
     }
 }

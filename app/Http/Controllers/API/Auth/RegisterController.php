@@ -53,7 +53,7 @@ class RegisterController extends Controller
             }
 
             return ResponseJsonResource::make([
-                'user' => User::with(['roles', 'province', 'city'])->find($user->id),
+                'user' => User::with(['roles', 'province', 'city', 'district', 'village'])->find($user->id),
                 'shop' => $shop ?? null,
             ], "User berhasil dibuat");
 

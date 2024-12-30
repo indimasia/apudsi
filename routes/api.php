@@ -1,7 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\SosController;
+use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ShopController;
+use App\Http\Controllers\API\GroupController;
+use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\VersionController;
 use App\Http\Controllers\API\Auth\LoginController;
@@ -43,6 +47,26 @@ Route::group(['prefix' => 'masters'], function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::resource('shops', ShopController::class)->except(['edit']);
 
-    Route::get('/profile', [ProfileController::class, 'getProfile']);
+    // Profile
+    Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/profile', [ProfileController::class, 'update']);
+
+    // Article
+    Route::get('/articles/{id}', [ArticleController::class, 'show']);
+    Route::resource('articles', ArticleController::class)->except(['show']);
+
+    // Sos
+    Route::resource('sos', SosController::class);
+
+    // Group
+    Route::get('/groups/{groupId}/members', [GroupController::class, 'members']);
+    Route::post('/groups/{groupId}/join', [GroupController::class, 'join']);
+    Route::post('/groups/{groupId}/leave', [GroupController::class, 'leave']);
+    Route::post('/groups/{groupId}/remove-user/{userId}', [GroupController::class, 'removeUser']);
+    Route::resource('groups', GroupController::class);
+
+    // Chat
+    Route::resource('groups/{groupId}/chats', ChatController::class);
+
 });
     

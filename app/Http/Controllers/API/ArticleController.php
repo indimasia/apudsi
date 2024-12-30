@@ -41,7 +41,11 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        return new ResponseJsonResource(GeneralArticle::findOrFail($id), 'Articles retrieved successfully');
+        try {
+            return new ResponseJsonResource(GeneralArticle::findOrFail($id), 'Articles retrieved successfully');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Article not found'], $e->getCode() ?: 404);
+        }
     }
 
     /**

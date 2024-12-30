@@ -43,7 +43,9 @@ class PostProfileRequest extends FormRequest
                 'gender' => ['required', 'string', 'in:M,F'],
                 'phone' => ['required', 'string', 'max:15'],
                 'province_code' => ['required', 'string', 'exists:provinces,kode'],
-                'city_code' => ['required', 'string', 'exists:cities,kode'],
+                'city_code' => ['required', 'string', 'exists:cities,kode,kode_provinsi,' . $this->province_code],
+                'district_code' => ['required', 'string', 'exists:districts,kode,kode_kota,' . $this->city_code],
+                'village_code' => ['required', 'string', 'exists:villages,kode,kode_kecamatan,' . $this->district_code],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             ];
         }
