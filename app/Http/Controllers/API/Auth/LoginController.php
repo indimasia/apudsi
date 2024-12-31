@@ -10,17 +10,26 @@ class LoginController extends Controller
 {
     public function __invoke(Request $request) {
         $request->validate([
-            'phone'    => 'required|doesnt_start_with:08',
+            'nik' => 'required|string',
             'password' => 'required|string',
         ]);
         
-        $credentials = $request->only('phone', 'password');
-        // $credentials['is_active'] = true;
+        $credentials = [
+            'password' => $request->password,
+        ];
+
+        if (preg_match('/^\d{16}$/', $request->nik)) {
+            $credentials['nik'] = $request->nik;
+        } else {
+            $credentials['phone'] = $request->nik;
+        }
+
         if (!auth()->attempt($credentials,true)) {
             return response()->json([
                 'message' => 'Invalid login details'
             ], 401);
         }
+
     
         $user = auth()->user();
         // $user->update(['last_online' => now()]);

@@ -25,6 +25,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
      * @var array<int, string>
      */
     protected $fillable = [
+        'nik',
         'name',
         'email',
         'password',

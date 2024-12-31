@@ -16,6 +16,7 @@ class RegisterController extends Controller
         try {
 
             $user = User::create([
+                'nik'               => $request->nik,
                 'name'              => $request->name,
                 'password'          => bcrypt($request->password),
                 'phone'             => $request->phone,

@@ -21,22 +21,23 @@ class PostProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        if(auth()->user()->hasRole('biro')) {
+        // if(auth()->user()->hasRole('biro')) {
+        //     return [
+        //         'name' => 'required|string|max:255',
+        //         'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
+        //         'password' => ['nullable', 'string', 'min:8', 'confirmed'],
+        //         'phone' => 'required|string|doesnt_start_with:08|unique:users,phone,' . auth()->id(),
+        //         'biro_code' => 'required|min:3|max:10|unique:biros,code,' . auth()->user()->biro_id,
+        //         'owner' => 'required|string|max:255',
+        //         'marketing_phone' => 'required|string|doesnt_start_with:08',
+        //         'logo' => 'nullable|file|mimes:jpg,jpeg,png|max:1024',
+        //         'province_code' => 'required|exists:provinces,kode',
+        //         'city_code' => 'required|exists:cities,kode',
+        //         'average_person_per_year' => 'required|integer',
+        //     ];
+        // } else {
             return [
-                'name' => 'required|string|max:255',
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
-                'password' => ['nullable', 'string', 'min:8', 'confirmed'],
-                'phone' => 'required|string|doesnt_start_with:08|unique:users,phone,' . auth()->id(),
-                'biro_code' => 'required|min:3|max:10|unique:biros,code,' . auth()->user()->biro_id,
-                'owner' => 'required|string|max:255',
-                'marketing_phone' => 'required|string|doesnt_start_with:08',
-                'logo' => 'nullable|file|mimes:jpg,jpeg,png|max:1024',
-                'province_code' => 'required|exists:provinces,kode',
-                'city_code' => 'required|exists:cities,kode',
-                'average_person_per_year' => 'required|integer',
-            ];
-        } else {
-            return [
+                'nik' => ['required', 'string', 'digits:16', 'unique:users,nik,' . auth()->id()],
                 'photo' => 'nullable|file|mimes:jpg,jpeg,png|max:1024',
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . auth()->id()],
@@ -48,6 +49,6 @@ class PostProfileRequest extends FormRequest
                 'village_code' => ['required', 'string', 'exists:villages,kode,kode_kecamatan,' . $this->district_code],
                 'password' => ['nullable', 'string', 'min:8', 'confirmed'],
             ];
-        }
+        // }
     }
 }

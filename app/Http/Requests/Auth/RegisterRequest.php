@@ -22,6 +22,7 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'nik'                        => 'required|digits:16|unique:users,nik',
             'name'                       => 'required|string|max:255',
             'user_type'                  => 'required|in:seller,user',
             'email'                      => 'required|string|email|unique:users',
