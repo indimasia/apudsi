@@ -34,7 +34,7 @@ class RegisterController extends Controller
                 $user->assignRole('user');
             }
 
-            if ($request->has('shop')) {
+            if ($request->has('shop') && $request->user_type == 'seller') {
                 $logo = null;
                 if ($request->hasFile('shop.logo')) {
                     // store logo
