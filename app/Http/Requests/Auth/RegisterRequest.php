@@ -35,11 +35,11 @@ class RegisterRequest extends FormRequest
             'village_code'               => 'required|exists:villages,kode,kode_kecamatan,' . $this->district_code,
 
             'shop'             => 'required_if:user_type,seller|array',
-            'shop.name'        => 'required_with:shop|string|max:255',
-            'shop.type'        => 'required_with:shop|string|max:255',
-            'shop.description' => 'nullable_with:shop|string',
-            'shop.address'     => 'required_with:shop|string|max:255',
-            'shop.logo'        => 'required_with:shop|image|mimes:jpeg,png,jpg,gif,svg',
+            'shop.name'        => 'required_if:user_type,seller|string|max:255',
+            'shop.type'        => 'required_if:user_type,seller|string|max:255',
+            'shop.description' => 'nullable|string',
+            'shop.address'     => 'required_if:user_type,seller|string|max:255',
+            'shop.logo'        => 'required_if:user_type,seller|image|mimes:jpeg,png,jpg,gif,svg',
         ];
     }
 }
