@@ -18,6 +18,7 @@ use App\Http\Controllers\API\AccountDeletionController;
 use App\Http\Controllers\API\Master\DistrictController;
 use App\Http\Controllers\API\Master\ProvinceController;
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
+use App\Http\Controllers\API\DashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,7 +60,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Article
     Route::get('/articles/{id}', [ArticleController::class, 'show']);
     Route::resource('articles', ArticleController::class)->except(['show']);
-
+    
+    Route::get('/home', [DashboardController::class, 'show']);
     // Sos
     Route::resource('sos', SosController::class);
 
