@@ -4,11 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SosController;
 use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ShopController;
+use App\Http\Controllers\API\AgentController;
 use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\VersionController;
 use App\Http\Controllers\API\Auth\LoginController;
+use App\Http\Controllers\API\AgentReportController;
 use App\Http\Controllers\API\Auth\LogoutController;
 use App\Http\Controllers\API\Master\CityController;
 use App\Http\Controllers\API\Auth\RegisterController;
@@ -78,5 +80,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Account Deletion
     Route::post('/account-deletion', AccountDeletionController::class);
 
+    // Agent
+    Route::resource('agents', AgentController::class)->only(['index', 'show']);
+    Route::resource('agents/{agentId}/reports', AgentReportController::class);
 });
     
