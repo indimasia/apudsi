@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\SosController;
 use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ShopController;
+use App\Http\Controllers\API\AgentController;
 use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ProfileController;
@@ -76,5 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Account Deletion
     Route::post('/account-deletion', AccountDeletionController::class);
 
+    // Agent
+    Route::resource('agents', AgentController::class);
+    
 });
     
