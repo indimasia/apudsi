@@ -19,6 +19,7 @@ use App\Http\Controllers\API\Master\DistrictController;
 use App\Http\Controllers\API\Master\ProvinceController;
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\API\DashboardController;
+use App\Http\Controllers\API\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home', [DashboardController::class, 'show']);
     // Sos
     Route::resource('sos', SosController::class);
+    Route::resource('product', ProductController::class);
 
     // Group
     Route::get('/groups/{groupId}/members', [GroupController::class, 'members']);
