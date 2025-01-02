@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,6 +20,7 @@ class AgentReport extends Model
         'description',
         'province_code',
         'regency_code',
+        'city_code',
         'district_code',
         'village_code',
         'agent_id',
@@ -47,5 +49,12 @@ class AgentReport extends Model
     
     function village(): BelongsTo {
         return $this->belongsTo(Village::class, 'village_code', 'kode');
+    }
+
+    protected function image(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => $value ? asset('storage/'. $value) : null,
+        );
     }
 }

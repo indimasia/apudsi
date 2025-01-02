@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('lat');
             $table->string('image');
             $table->text('description')->nullable();
-            $table->foreignId('province_code');
-            $table->foreignId('regency_code');
-            $table->foreignId('district_code');
-            $table->foreignId('village_code');
+            $table->char('province_code', 2)->nullable()->index();
+            $table->char('regency_code', 5)->nullable()->index();
+            $table->char('district_code', 8)->nullable()->index();
+            $table->char('village_code', 13)->nullable()->index();
             $table->foreignId('created_by')->constrained('users');
             $table->foreignId('agent_id')->constrained('agents');
             $table->timestamps();

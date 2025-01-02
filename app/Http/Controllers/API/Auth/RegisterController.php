@@ -30,26 +30,28 @@ class RegisterController extends Controller
 
             if ($request->user_type == 'seller') {
                 $user->assignRole(['seller','user']);
+
+                if ($request->has('shop')) {
+
+                    $logo = null;
+                    if ($request->hasFile('shop.logo')) {
+                        // store logo
+                        $logo = $request->file('shop.logo')->store('logo' , 'public');
+                    }
+                        
+                        // create shop
+                    $shop = Shop::create([
+                        'name'        => $request->shop['name'],
+                        'type'        => $request->shop['type'],
+                        'description' => $request->shop['description'] ?? null,
+                        'address'     => $request->shop['address'],
+                        'logo'        => $logo,
+                        'user_id'     => $user->id,
+                    ]);
+                }
+
             } else {
                 $user->assignRole('user');
-            }
-
-            if ($request->has('shop') && $request->user_type == 'seller') {
-                $logo = null;
-                if ($request->hasFile('shop.logo')) {
-                    // store logo
-                    $logo = $request->file('shop.logo')->store('logo' , 'public');
-                }
-                
-                // create shop
-                $shop = Shop::create([
-                    'name'        => $request->shop['name'],
-                    'type'        => $request->shop['type'],
-                    'description' => $request->shop['description'] ?? null,
-                    'address'     => $request->shop['address'],
-                    'logo'        => $logo,
-                    'user_id'     => $user->id,
-                ]);
             }
 
             return ResponseJsonResource::make([
