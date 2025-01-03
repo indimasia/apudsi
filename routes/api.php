@@ -7,21 +7,22 @@ use App\Http\Controllers\API\ShopController;
 use App\Http\Controllers\API\AgentController;
 use App\Http\Controllers\API\GroupController;
 use App\Http\Controllers\API\ArticleController;
+use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\VersionController;
+use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\AgentReportController;
 use App\Http\Controllers\API\Auth\LogoutController;
 use App\Http\Controllers\API\Master\CityController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\ShareContentsController;
 use App\Http\Controllers\API\Master\VillageController;
 use App\Http\Controllers\API\UpdateLocationController;
 use App\Http\Controllers\API\AccountDeletionController;
 use App\Http\Controllers\API\Master\DistrictController;
 use App\Http\Controllers\API\Master\ProvinceController;
 use App\Http\Controllers\API\Auth\ForgotPasswordController;
-use App\Http\Controllers\API\DashboardController;
-use App\Http\Controllers\API\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,6 +69,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Sos
     Route::resource('sos', SosController::class);
     Route::resource('product', ProductController::class);
+    Route::get('/home/user', [ProductController::class, 'getProductsForUser']);
+    Route::resource('share-content', ShareContentsController::class);
+    Route::post('/share-content/add-counter/{contentId}', [ShareContentsController::class, 'addCounter']);
 
     // Group
     Route::get('/groups/{groupId}/members', [GroupController::class, 'members']);
