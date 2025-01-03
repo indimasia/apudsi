@@ -7,21 +7,26 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class ResponseJsonResource extends JsonResource
 {
-    public function __construct($resource, 
-        public string $message = "Success")
+    private $message;
+    private $status;
+
+    public function __construct($resource, $message = 'Success', $status = 200)
     {
         parent::__construct($resource);
+        $this->message = $message;
+        $this->status = $status;
     }
-    /**
-     * Transform the resource into an array.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(Request $request): array
+
+    public function toArray($request)
     {
         return [
+            'data' => $this->resource,
             'message' => $this->message,
-            'data' => parent::toArray($request),
         ];
+    }
+
+    public function withResponse($request, $response)
+    {
+        $response->setStatusCode($this->status);
     }
 }
