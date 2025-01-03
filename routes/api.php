@@ -68,7 +68,6 @@ Route::middleware('auth:sanctum')->group(function () {
     // Sos
     Route::resource('sos', SosController::class);
     Route::resource('product', ProductController::class);
-    Route::get('/home/user', [ProductController::class, 'getProductsForUser']);
 
     // Group
     Route::get('/groups/{groupId}/members', [GroupController::class, 'members']);
