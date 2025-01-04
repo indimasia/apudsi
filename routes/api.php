@@ -10,6 +10,7 @@ use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\VersionController;
+use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\DashboardController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\AgentReportController;
@@ -72,6 +73,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home/user', [ProductController::class, 'getProductsForUser']);
     Route::resource('share-content', ShareContentsController::class);
     Route::post('/share-content/add-counter/{contentId}', [ShareContentsController::class, 'addCounter']);
+    
+    Route::get('/category', [CategoryController::class, 'index']);
+    Route::delete('/product-images/{id}', [ProductController::class, 'destroyImage']);
 
     // Group
     Route::get('/groups/{groupId}/members', [GroupController::class, 'members']);

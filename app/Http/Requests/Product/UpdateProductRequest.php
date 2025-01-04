@@ -15,11 +15,13 @@ class UpdateProductRequest extends FormRequest
     {
         return [
             'shop_id' => 'sometimes|required|exists:shops,id',
+            'category_id' => 'sometimes|required|exists:categories,id',
             'name' => 'sometimes|required|string|max:255',
             'description' => 'sometimes|required|string',
             'price' => 'sometimes|required|numeric',
             'stock' => 'sometimes|required|integer',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images' => 'sometimes|required|array|max:5',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }
 } 
