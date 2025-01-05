@@ -54,8 +54,7 @@ class ProductController extends Controller
             $search = $request->input('search', '');
             $perPage = $request->input('per_page', 10);
 
-            $query = Product::with(['images', 'category'])
-                        ->where('shop_id', $shopId);
+            $query = Product::with(['images', 'category']);
 
             if ($search) {
                 $query->where('name', 'like', '%' . $search . '%');
@@ -68,7 +67,7 @@ class ProductController extends Controller
         }
     }
 
-    public function index()
+    public function index(Request $request)
     {
         try {
             $shopId = auth()->user()->shops()->first()->id;
@@ -76,7 +75,10 @@ class ProductController extends Controller
             $perPage = $request->input('per_page', 10);
             $products = Product::with(['images', 'category'])
                            ->where('shop_id', $shopId)
-                           ->get();
+                           ->when($search, function ($query) use ($search) {
+                                $query->where('name', 'like', '%' . $search . '%');
+                            })
+                            ->paginate($perPage);
             return new ResponseJsonResource($products, 'Products retrieved successfully');
         } catch (\Exception $e) {
             return new ResponseJsonResource(null, 'Failed to create product: ' . $e->getMessage(), 500);

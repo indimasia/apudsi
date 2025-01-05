@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Product extends Model
 {
@@ -23,13 +22,6 @@ class Product extends Model
         'created_at',
         'updated_at',
     ];
-
-    protected function image(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) => $value ? asset('storage/'. $value) : null,
-        );
-    }
 
     public function category()
     {
