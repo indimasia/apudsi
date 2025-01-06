@@ -18,7 +18,7 @@ class ProductController extends Controller
         try {
 
             $product = Product::create([
-                'shop_id' => $request->shop_id,
+                'shop_id' => auth()->user()->shops()->first()->id,
                 'category_id' => $request->category_id,
                 'name' => $request->name,
                 'description' => $request->description,
@@ -81,7 +81,7 @@ class ProductController extends Controller
                             ->paginate($perPage);
             return new ResponseJsonResource($products, 'Products retrieved successfully');
         } catch (\Exception $e) {
-            return new ResponseJsonResource(null, 'Failed to create product: ' . $e->getMessage(), 500);
+            return new ResponseJsonResource(null, 'Failed to get product: ' . $e->getMessage(), 500);
         }
     }
 
