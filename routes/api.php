@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ChatController;
 use App\Http\Controllers\API\ShopController;
 use App\Http\Controllers\API\AgentController;
 use App\Http\Controllers\API\GroupController;
+use App\Http\Controllers\API\OrderController;
 use App\Http\Controllers\API\ArticleController;
 use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\ProfileController;
@@ -65,6 +66,9 @@ Route::middleware('auth:sanctum')->group(function () {
     // Article
     Route::get('/articles/{id}', [ArticleController::class, 'show']);
     Route::resource('articles', ArticleController::class)->except(['show']);
+    Route::resource('order', OrderController::class);
+    Route::get('/order-user', [OrderController::class, 'getOrdersForUser']);
+    Route::get('/user/orders/{id}', [OrderController::class, 'showForUser']);
     
     Route::get('/home', [DashboardController::class, 'show']);
     // Sos
