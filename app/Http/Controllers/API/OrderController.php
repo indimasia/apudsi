@@ -12,13 +12,14 @@ use App\Http\Requests\Order\UpdateOrderRequest;
 
 class OrderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         try {
             $orders = Order::with('user', 'product', 'product.images')
                 ->whereHas('product', function ($query) {
                     $query->where('shop_id', auth()->user()->shops()->first()->id);
                 })
+                ->where('status', $request->status)
                 ->get();
             return new ResponseJsonResource($orders, 'Orders retrieved successfully');
         } catch (\Exception $e) {
@@ -45,6 +46,7 @@ class OrderController extends Controller
                 'quantity' => $request->quantity,
                 'total_price' => $totalPrice,
                 'status' => 'pending',
+                'kurir' => $request->kurir,
                 'notes' => $request->notes,
                 'ordered_at' => $request->ordered_at ?? now(),
             ]);
@@ -94,6 +96,7 @@ class OrderController extends Controller
                 'quantity' => $request->quantity,
                 'total_price' => $totalPrice,
                 'status' => 'pending',
+                'kurir' => $request->kurir,
                 'notes' => $request->notes,
                 'ordered_at' => $request->ordered_at ?? now(),
             ]);

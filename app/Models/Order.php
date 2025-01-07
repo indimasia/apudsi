@@ -17,6 +17,7 @@ class Order extends Model
         'quantity',
         'total_price',
         'status',
+        'kurir',
         'notes',
         'ordered_at',
     ];

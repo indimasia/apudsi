@@ -24,6 +24,7 @@ class StoreOrderRequest extends FormRequest
         return [
             'product_id' => 'required|exists:products,id',
             'quantity' => 'required|integer|min:1',
+            'kurir' => 'required|string',
             'notes' => 'nullable|string',
             'ordered_at' => 'nullable|date',
         ];
