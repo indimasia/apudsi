@@ -70,11 +70,13 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         try {
-            $shopId = auth()->user()->shops()->first()->id;
+            $shopId = auth()->user()->shops()->pluck('id');
+            // $shopId = auth()->user()->shops()->first()->id;
             $search = $request->input('search', '');
             $perPage = $request->input('per_page', 10);
             $products = Product::with(['images', 'category'])
-                           ->where('shop_id', $shopId)
+                           ->whereIn('shop_id', $shopId)
+                        //    ->where('shop_id', $shopId)
                            ->when($search, function ($query) use ($search) {
                                 $query->where('name', 'like', '%' . $search . '%');
                             })
