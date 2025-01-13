@@ -15,11 +15,14 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         try {
+            $shopids = auth()->user()->shops()->pluck('id');
             $orders = Order::with('user', 'product', 'product.images')
-                ->whereHas('product', function ($query) {
-                    $query->where('shop_id', auth()->user()->shops()->first()->id);
+                ->whereHas('product', function ($query) use ($shopids) {
+                    $query->whereIn('shop_id', $shopids);
                 })
-                ->where('status', $request->status)
+                ->when($request->status, function ($query) use ($request) {
+                    $query->where('status', $request->status);
+                })
                 ->get();
             return new ResponseJsonResource($orders, 'Orders retrieved successfully');
         } catch (\Exception $e) {
