@@ -47,13 +47,13 @@ class Dashboard extends Page
 
     return $query->get()->map(function ($user) {
         return [
-            'name' => $user->name,
-            'phone' => $user->phone,
-            'last_online' => $user->last_online,
-            'province_code' => $user->province->nama,
-            'city_code' => $user->city->nama,
-            'district_code' => $user->district->nama,
-            'village_code' => $user->village->nama,
+            'name' => $user->name ?? null,
+            'phone' => $user->phone ?? null,
+            'last_online' => $user->last_online ?? null,
+            'province_code' => $user->province->nama ?? null,
+            'city_code' => $user->city->nama ?? null,
+            'district_code' => $user->district->nama ?? null,
+            'village_code' => $user->village->nama ?? null,
             'lat' => $user->lat ?? 0,
             'lng' => $user->lng ?? 0,
         ];
