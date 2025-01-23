@@ -12,7 +12,8 @@ use App\Http\Resources\ResponseJsonResource;
 
 class RegisterController extends Controller
 {
-    public function __invoke(RegisterRequest $request) {
+    public function __invoke(RegisterRequest $request)
+    {
         try {
 
             $user = User::create([
@@ -27,20 +28,21 @@ class RegisterController extends Controller
                 'email'             => $request->email,
                 'email_verified_at' => now(),
                 'gender'            => $request->gender ?? null,
+                'is_verified'       => false,
             ]);
 
             if ($request->user_type == 'seller') {
-                $user->assignRole(['seller','user']);
+                $user->assignRole(['seller', 'user']);
 
                 if ($request->has('shop')) {
 
                     $logo = null;
                     if ($request->hasFile('shop.logo')) {
                         // store logo
-                        $logo = $request->file('shop.logo')->store('logo' , 'public');
+                        $logo = $request->file('shop.logo')->store('logo', 'public');
                     }
-                        
-                        // create shop
+
+                    // create shop
                     $shop = Shop::create([
                         'name'        => $request->shop['name'],
                         'type'        => $request->shop['type'],
@@ -50,7 +52,6 @@ class RegisterController extends Controller
                         'user_id'     => $user->id,
                     ]);
                 }
-
             } else {
                 $user->assignRole('user');
             }
@@ -59,7 +60,6 @@ class RegisterController extends Controller
                 'user' => User::with(['roles', 'province', 'city', 'district', 'village'])->find($user->id),
                 'shop' => $shop ?? null,
             ], "User berhasil dibuat");
-
         } catch (Exception $e) {
             return response()->json([
                 'message' => "Gagal membuat user",
