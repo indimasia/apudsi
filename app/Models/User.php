@@ -44,6 +44,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
         'lat',
         'lng',
         'last_online',
+        'is_verified',
     ];
 
     /**
@@ -98,7 +99,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
     {
         return $this->belongsTo(Village::class, 'village_code', 'kode');
     }
-    
+
     public function shops()
     {
         return $this->hasMany(Shop::class);
@@ -106,7 +107,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
     protected function photo(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => $value ? asset('storage/'. $value) : null,
+            get: fn($value) => $value ? asset('storage/' . $value) : null,
         );
     }
 }
