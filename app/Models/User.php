@@ -66,6 +66,7 @@ class User extends Authenticatable implements CanResetPassword, FilamentUser
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
         'is_demo' => 'boolean',
+        'is_verified' => 'boolean',
     ];
 
     // protected $appends = ['photo_path'];
