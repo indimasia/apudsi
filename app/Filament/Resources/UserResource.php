@@ -15,6 +15,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Forms\Set;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -33,12 +34,10 @@ class UserResource extends Resource
                 TextInput::make('name')
                     ->label('Nama')
                     ->required(),
-                Select::make('role_id')
-                    ->relationship('roles', 'name',
-                        modifyQueryUsing: function (Builder $query) {
-                            return $query->where('name', '!=', 'biro');
-                        })
+                Select::make('roles')
+                    ->relationship('roles', 'name')
                     ->preload()
+                    ->searchable()
                     ->required(),
                 // Select::make('roles')
                 //     ->label('Role')
@@ -52,7 +51,11 @@ class UserResource extends Resource
                 //     })
                 //     ->multiple(),
                 TextInput::make('email')
-                    ->label('Email'),
+                    ->label('Email')
+                    ->required(),
+                TextInput::make('nik')
+                    ->label('NIK')
+                    ->required(),
                 TextInput::make('password')
                     ->label('Password')
                     ->required(fn (string $context): bool => $context === 'create')
@@ -69,18 +72,31 @@ class UserResource extends Resource
                         'F' => 'Perempuan',
                     ])
                     ->required(),
-                TextInput::make("spph")
-                    ->label('SPPH'),
+                // TextInput::make("spph")
+                //     ->label('SPPH'),
                 // Select::make('biro_id')
                 //     ->label('Biro')
                 //     ->options(fn () => \App\Models\Biro::pluck('name', 'id')),
                 Select::make('province_code')
                     ->label('Provinsi')
                     ->options(fn () => \App\Models\Province::pluck('nama', 'kode'))
-                    ->live(),
+                    ->live()
+                    ->required(),
                 Select::make('city_code')
                     ->label('Kota')
-                    ->options(fn (Get $get) => \App\Models\City::where('kode_provinsi', $get('province_code'))->pluck('nama', 'kode')),
+                    ->options(fn (Get $get) => \App\Models\City::where('kode_provinsi', $get('province_code'))->pluck('nama', 'kode'))
+                    ->live()
+                    ->required(),
+                Select::make('district_code')
+                    ->label('Kecamatan')
+                    ->options(fn (Get $get) => \App\Models\District::where('kode_kota', $get('city_code'))->where('kode_provinsi', $get('province_code'))->pluck('nama', 'kode'))
+                    ->live()
+                    ->required(),
+                Select::make('village_code')
+                    ->label('Kelurahan')
+                    ->options(fn (Get $get) => \App\Models\Village::where('kode_kecamatan', $get('district_code'))->where('kode_kota', $get('city_code'))->where('kode_provinsi', $get('province_code'))->pluck('nama', 'kode'))
+                    ->live()
+                    ->required(),
                 Toggle::make('is_active')
                     ->label('Aktif'),
                 Toggle::make('is_demo')
@@ -116,16 +132,24 @@ class UserResource extends Resource
                 //     ->label('Biro')
                 //     ->searchable()
                 //     ->sortable(),
-                TextColumn::make("spph")
-                    ->label('SPPH')
-                    ->searchable()
-                    ->sortable(),
+                // TextColumn::make("spph")
+                //     ->label('SPPH')
+                //     ->searchable()
+                //     ->sortable(),
                 TextColumn::make("province.nama")
                     ->label('Provinsi')
                     ->searchable()
                     ->sortable(),
                 TextColumn::make("city.nama")
                     ->label('Kota')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make("district.nama")
+                    ->label('Kecamatan')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make("village.nama")
+                    ->label('Kelurahan')
                     ->searchable()
                     ->sortable(),
                 ToggleColumn::make('is_active')
